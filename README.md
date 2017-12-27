@@ -12,6 +12,10 @@ Neural RNN network generator human passwords
 7. Python 3.6
 8. TensorBoard
 
+## Datasets
+For example, in data folder you can find dataset (ICQ passwords, VK5k pass, etc)
+You can use any dict, just add it to data
+
 ## Setup
 ###Network.py
 1. In tbCallBack function change log_dir param to your log directory.
