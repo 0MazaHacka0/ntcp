@@ -23,6 +23,9 @@ def findFiles(path): return glob.glob(path)
 
 sentence = ''
 
+# Write generated passwords
+out = io.open('out_generated', 'w')
+
 # Read data
 path = 'data/*.txt'
 text = ''
@@ -79,13 +82,13 @@ def sample(preds, temperature=1.0):
     return np.argmax(probas)
 
 # train the model, output generated text after each iteration
-for iteration in range(1, 2):
+for iteration in range(1, 50):
     print()
     print('-' * 50)
     print('Iteration', iteration)
     model.fit(x, y,
               batch_size=128,
-              epochs=50, validation_data=(x, y), callbacks=[history])
+              epochs=5, validation_data=(x, y), callbacks=[history])
 
 
     plt.ion()
@@ -110,11 +113,13 @@ for iteration in range(1, 2):
     for diversity in [0.2, 0.5, 1.0, 1.2]:
         print()
         print('----- diversity:', diversity)
+        #out.write(str('----- diversity: ' + diversity))
 
         generated = ''
         sentence = text[start_index: start_index + maxlen]
         generated += sentence
         print('----- Generating with seed: "' + sentence.replace('\n', '\\n') + '"')
+        out.write(str('----- Generating with seed: "' + sentence.replace('\n', '\\n') + '"'))
         #sys.stdout.write(generated)
 
         for i in range(400):
@@ -130,5 +135,7 @@ for iteration in range(1, 2):
             sentence = sentence[1:] + next_char
 
             sys.stdout.write(next_char)
+            out.write(next_char)
             sys.stdout.flush()
+            out.flush()
         print()
